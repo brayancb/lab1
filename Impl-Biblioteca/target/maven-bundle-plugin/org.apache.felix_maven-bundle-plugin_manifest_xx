@@ -1,7 +1,0 @@
-Bundle-Activator=null
-Bundle-SymbolicName=cl.ucn.felix.biblioteca.api.impl
-Export-Package=null
-Import-Package=null
-Private-Package=null
-_noee=true
-_removeheaders=Import-Service,Export-Service

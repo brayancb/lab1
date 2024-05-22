@@ -1,79 +1,93 @@
 package cl.ucn.felix.biblioteca.api.impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class InventarioImpl {
+import cl.ucn.felix.biblioteca.api.ExcepcionLibroInvalido;
+import cl.ucn.felix.biblioteca.api.ExcepcionLibroNoEncontrado;
+import cl.ucn.felix.biblioteca.api.Inventario;
+import cl.ucn.felix.biblioteca.api.Libro;
+import cl.ucn.felix.biblioteca.api.LibroMutable;
+
+public class InventarioImpl implements Inventario {
 
 	public static final String CATEGORIA_DEFECTO = "default";
+
 	private Map<String, LibroMutable> libroByIsbn = new HashMap<String, LibroMutable>();
 	private Map<String, Integer> categorias =  new HashMap<String, Integer>();
-	
+
+
 	public LibroMutable crearLibro(String isbn) {
-		
+
 		return new LibroMutableImpl(isbn);
+
 	}
 	
-	
 	public Set<String> buscarLibros(Map<CriterioBusqueda,String> criterio) {
-		
+
 		List<Libro> libros = new LinkedList<Libro>();
+
 		libros.addAll(this.libroByIsbn.values());
-		
-		for (Map.Entry<CriterioBusqueda, String> criterios : criterio.entrySet()) 
-		{	
+
+		for (Map.Entry<CriterioBusqueda, String> criterios : criterio.entrySet()) {
+
 			Iterator<Libro> it = libros.iterator();
 			while (it.hasNext()) {
 				Libro libro = it.next();
 				switch (criterios.getKey()) {
-					case AUTOR_LIKE: 
-					if (!checkStringMatch(libro.getAutor(), 
-							criterios.getValue())) {
+				case AUTOR_LIKE: 
+					if (!checkStringMatch(libro.getAutor(), criterios.getValue()))
+					{
 						it.remove();
 						continue;
 					}
-					
+
 					break;
-					
-					case ISBN_LIKE:
-					if (!checkStringMatch(libro.getIsbn(), 
-							criterios.getValue())) {
+
+				case ISBN_LIKE:
+					if (!checkStringMatch(libro.getIsbn(), criterios.getValue()))
+					{
 						it.remove();
 						continue;
 					}
-					
+
 					break;
-					case CATEGORIA_LIKE:
-					if (!checkStringMatch(libro.getCategoria(), 
-							criterios.getValue())) {
+				case CATEGORIA_LIKE:
+					if (!checkStringMatch(libro.getCategoria(), criterios.getValue()))
+					{
 						it.remove();
 						continue;
 					}
-					
+
 					break;
-					case TITULO_LIKE:
-					if (!checkStringMatch(libro.getTitulo(), 
-							criterios.getValue())) {
+				case TITULO_LIKE:
+					if (!checkStringMatch(libro.getTitulo(), criterios.getValue()))
+					{
 						it.remove();
 						continue;
 					}
-					
+
 					break;
-					default:
+				default:
 					break;
 				}
 			}
 		}
-		
+
 		HashSet<String> isbns = new HashSet<String>();
 		for (Libro libro : libros) {
 			isbns.add(libro.getIsbn());
 		}
-		
+
 		return isbns;
-		
+
 	}
-	
+
 	private boolean checkStringMatch(String attr, String critVal)
 	{
 		if (attr == null) {
@@ -89,7 +103,7 @@ public class InventarioImpl {
 			}
 			else {
 				return attr.contains(
-				critVal.substring(1, critVal.length() - 1));
+						critVal.substring(1, critVal.length() - 1));
 			}
 		}
 		else if (startsWith) { 
@@ -97,11 +111,11 @@ public class InventarioImpl {
 		}
 		else if (endsWith) {
 			return attr.startsWith(
-			critVal.substring(0, critVal.length() - 1));
+					critVal.substring(0, critVal.length() - 1));
 		}
 		else {
 			return attr.equals(critVal);
 		}
 	}
-	
+
 }

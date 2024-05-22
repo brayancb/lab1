@@ -1,14 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<groupId>cl.ucn.felix</groupId>
-	<artifactId>cl.ucn.felix.biblioteca.api.impl</artifactId>
+	<artifactId>cl.ucn.felix.biblioteca.api</artifactId>
 	<version>1.0.0</version>
 
-	<name>cl.ucn.felix.biblioteca.api.impl</name>
-
+	<name>cl.ucn.felix.biblioteca.api</name>
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -17,16 +15,6 @@
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.ipojo.annotations</artifactId>
 			<version>1.12.1</version>
-		</dependency>
-		<dependency>
-			<groupId>cl.ucn.felix</groupId>
-			<artifactId>cl.ucn.felix.biblioteca.api</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-			<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.core</artifactId>
-			<version>6.0.0</version>
 		</dependency>
 	</dependencies>
 
@@ -40,18 +28,17 @@
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Private-Package>${private.packages}</Private-Package>
+						<Private-Package>${export.packages}</Private-Package>
 						<Import-Package>${import.packages}</Import-Package> <!-- defined in bundle.properties -->
 						<Export-Package>${export.packages}</Export-Package> <!-- define in bundle.properties -->
-						<Bundle-Activator>
-							cl.ucn.felix.biblioteca.inventario.activador.InventarioActivador
-						</Bundle-Activator>
 					</instructions>
 					<remoteOBR>repo-rel</remoteOBR>
-					
-					<supportIncrementalBuild>true</supportIncrementalBuild>
+				<prefixUrl>
+					file:///home/dsanmartins/releases
+				</prefixUrl>
+				<supportIncrementalBuild>true</supportIncrementalBuild>
 				</configuration>
-				 <executions>
+				<executions>
 			        <execution>
 			          <id>bundle-manifest</id>
 			          <phase>process-classes</phase>
@@ -66,7 +53,7 @@
 			            </instructions>
 			          </configuration>
 			        </execution>
-			      </executions>
+			     </executions>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -97,7 +84,13 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
-
+	<distributionManagement>
+<!-- releases repo -->
+		<repository>
+			<id>repo-rel</id>
+			<url>file:///home/dsanmartins/releases</url>
+		</repository>
+	</distributionManagement>
+		
+	
 </project>
