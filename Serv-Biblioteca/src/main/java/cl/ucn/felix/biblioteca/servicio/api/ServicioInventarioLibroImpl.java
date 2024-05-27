@@ -61,7 +61,7 @@ public class ServicioInventarioLibroImpl implements ServicioInventarioLibro{
 
 	@Override
 	public void adicionarLibro(String sesion, String isbn, String titulo, String autor, String categoria) {
-		// TODO Auto-generated method stub
+		System.out.printf("Libro adicionado: %s, %s, %s, %s, %s%n", sesion, isbn, titulo, autor, categoria);
 		
 	}
 

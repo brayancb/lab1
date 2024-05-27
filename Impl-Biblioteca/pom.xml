@@ -97,7 +97,14 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<distributionManagement>
+<!-- releases repo -->
+		<repository>
+			<id>repo-rel</id>
+			<url>file:///C:/home/dsanmartins/releases</url>
+		</repository>
+	</distributionManagement>
+	
 
 
 </project>

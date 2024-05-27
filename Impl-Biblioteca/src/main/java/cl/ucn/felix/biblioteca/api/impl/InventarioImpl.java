@@ -118,4 +118,69 @@ public class InventarioImpl implements Inventario {
 		}
 	}
 
+	@Override
+	public Set<String> getCategorias() {
+		return this.categorias.keySet();
+	}
+
+	@Override
+	public LibroMutable cargarLibroParaEdicion(String isbn) throws ExcepcionLibroNoEncontrado {
+		LibroMutable libro = this.libroByIsbn.get(isbn);
+        if (libro == null) {
+            throw new ExcepcionLibroNoEncontrado(isbn);
+        }
+        return libro;
+	}
+
+	@Override
+	public String guardarLibro(LibroMutable libro) throws ExcepcionLibroInvalido {
+		String isbn = libro.getIsbn();
+		if (isbn == null) {
+			throw new ExcepcionLibroInvalido("ISBN no puede ser nulo");
+		};
+		this.libroByIsbn.put(isbn, libro);
+		String categoria = libro.getCategoria();
+		if (categoria == null) {
+			categoria = CATEGORIA_DEFECTO;
+		}
+		if (this.categorias.containsKey(categoria)) {
+			int contador = this.categorias.get(categoria);
+			this.categorias.put(categoria, contador + 1);
+		}
+		else {
+			this.categorias.put(categoria, 1);
+
+		}
+		return isbn;
+
+	};
+
+	@Override
+	public Libro cargarLibro(String isbn) throws ExcepcionLibroNoEncontrado {
+		return cargarLibroEditar ( isbn );
+	}
+
+	@Override
+	public void removerLibro(String isbn) throws ExcepcionLibroNoEncontrado {
+		LibroMutable libro = this.libroByIsbn.remove(isbn);
+        if (libro == null) {
+            throw new ExcepcionLibroNoEncontrado(isbn);
+        }
+        String categoria = libro.getCategoria();
+        int contador = this.categorias.get(categoria);
+        if (contador == 1) {
+            this.categorias.remove(categoria);
+        } else {
+            this.categorias.put(categoria, contador - 1);
+        }
+	}
+
+	public LibroMutable cargarLibroEditar(String isbn) throws ExcepcionLibroNoEncontrado {
+		LibroMutable libro = this.libroByIsbn.get(isbn);
+		if (libro == null) {
+			throw new ExcepcionLibroNoEncontrado(isbn);
+		}
+		return libro;
+	};
+
 }
